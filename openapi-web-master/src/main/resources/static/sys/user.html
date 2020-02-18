@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>菜单管理</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" href="../public/css/bootstrap.min.css">
+<link rel="stylesheet" href="../public/css/font-awesome.min.css">
+<link rel="stylesheet" href="../public/plugins/bootstrap-table/bootstrap-table.min.css">
+<link rel="stylesheet" href="../public/plugins/ztree/css/metroStyle/metroStyle.css">
+<link rel="stylesheet" href="../public/css/main.css">
+
+</head>
+<body>
+
+
+<div id="dtapp" v-cloak>
+    <div v-show="showList">
+        <div class="panel panel-default">
+            <div class="panel-heading">查询条件</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-inline">
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" class="form-control" id="user-email" placeholder="jane.doe@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label >姓名</label>
+                        <input type="text" class="form-control" id="user-name" placeholder="Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label >状态</label>
+                        <select class="form-control" id="user-status" >
+                            <option value="">请选择</option>
+                            <option value="1">有效</option>
+                            <option value="0">无效</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary" @click="reload">查询</button>
+                </form>
+            </div>
+        </div>
+        <div id="toolbar">
+            <button v-if="hasPermission('sys:user:add')"  class="btn btn-success " type="button" @click="add">
+                <i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="bold">新增</span>
+            </button>
+            <button v-if="hasPermission('sys:user:update')" class="btn btn-warning " type="button" @click="update">
+                <i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;<span class="bold">修改</span>
+            </button>
+            <button v-if="hasPermission('sys:user:delete')" class="btn btn-danger " type="button" @click="del">
+                <i class="fa fa-remove"></i>&nbsp;&nbsp;<span class="bold">删除</span>
+            </button>
+            <button v-if="hasPermission('sys:user:assign')" class="btn btn-info " type="button" @click="menuTree">
+                <i class="fa fa-user-circle"></i>&nbsp;&nbsp;<span class="bold">授权</span>
+            </button>
+        </div>
+
+        <table id="table"></table>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal" id="user-form">
+            <input type="hidden" v-model="user.id"/>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">邮箱</div>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" v-model="user.email" v-bind:readonly="emailReadOnly" placeholder="邮箱"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">真实姓名</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="user.realName" placeholder="真实姓名"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">密码</div>
+                <div class="col-sm-10">
+                    <input type="password" v-model="user.password" class="form-control" placeholder="密码"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">状态</div>
+                <div class="col-sm-10">
+                    <select class="form-control" v-model="user.status" >
+                        <option value="">请选择</option>
+                        <option value="1">有效</option>
+                        <option value="0">无效</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<!-- 选择菜单 -->
+<div id="menuLayer" style="display: none;padding:10px;">
+    <ul id="menuTree" class="ztree"></ul>
+</div>
+
+<script src="../public/libs/jquery.min.js"></script>
+<script src="../public/plugins/layer/layer.js"></script>
+<script src="../public/libs/bootstrap.min.js"></script>
+<script src="../public/libs/vue.min.js"></script>
+<script src="../public/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../public/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="../public/plugins/ztree/jquery.ztree.all.min.js"></script>
+<!--编写公共的方法-->
+<script src="../public/js/common.js"></script>
+
+<script src="../public/js/sys/user.js"></script>
+</body>
+</html>

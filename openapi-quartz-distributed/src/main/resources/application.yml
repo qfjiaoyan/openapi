@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: @profileActive@
+  application:
+    name: quartz-service
+#监控API平均响应时间的阈值，如果超过这个值就报警
+monitor:
+  avgResponseTime:
+    limit: 1000

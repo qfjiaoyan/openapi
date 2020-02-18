@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>菜单管理</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" href="../public/css/bootstrap.min.css">
+<link rel="stylesheet" href="../public/css/font-awesome.min.css">
+<link rel="stylesheet" href="../public/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="../public/plugins/bootstrap-table/bootstrap-table.min.css">
+<link rel="stylesheet" href="../public/plugins/ztree/css/metroStyle/metroStyle.css">
+<link rel="stylesheet" href="../public/css/main.css">
+
+</head>
+<body>
+
+
+<div id="dtapp" v-cloak>
+    <div v-show="showList">
+        <div class="panel panel-default">
+            <div class="panel-heading">查询条件</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-inline">
+                    <div class="form-group">
+                        <label>token</label>
+                        <input type="text" class="form-control" id="token" placeholder="请输入token">
+                    </div>
+                    <button type="button" class="btn btn-primary" @click="reload">查询</button>
+                </form>
+            </div>
+        </div>
+        <div id="toolbar">
+            <button v-if="hasPermission('sys:token:update')" class="btn btn-warning " type="button" @click="update">
+                <i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;<span class="bold">修改</span>
+            </button>
+            <button v-if="hasPermission('sys:token:add')" class="btn btn-success " type="button" @click="add">
+                <i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;<span class="bold">添加</span>
+            </button>
+        </div>
+
+        <table id="table"></table>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+            <input type="hidden" v-model="token.id">
+            <div class="form-group">
+                <div class="col-sm-2 control-label">appId</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="token.appId"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">userId</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="token.userId"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">accessToken</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="token.accessToken"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">startTime</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="token.startTime" id="startTime"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">expireTime</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="token.expireTime"  id="expireTime"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script src="../public/libs/jquery.min.js"></script>
+<script src="../public/plugins/layer/layer.js"></script>
+<script src="../public/libs/bootstrap.min.js"></script>
+<script src="../public/libs/bootstrap-datetimepicker.min.js"></script>
+<script src="../public/libs/vue.min.js"></script>
+<script src="../public/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../public/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<!--编写公共的方法-->
+<script src="../public/js/common.js"></script>
+
+<script src="../public/js/sys/token.js"></script>
+</body>
+</html>
